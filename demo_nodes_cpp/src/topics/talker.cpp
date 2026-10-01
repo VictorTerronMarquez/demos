@@ -24,6 +24,9 @@
 
 #include "demo_nodes_cpp/visibility_control.h"
 
+
+//#include <cstdint>
+
 using namespace std::chrono_literals;
 
 namespace demo_nodes_cpp
@@ -43,11 +46,20 @@ public:
       [this]() -> void
       {
         msg_ = std::make_unique<std_msgs::msg::String>();
-        msg_->data = "Hello World: " + std::to_string(count_++);
+        // modificamos para que salga el número correspondiente de la succ. fib
+        
+        //msg_->data = "Hello World: " + std::to_string(count_++);
+        
+        msg_->data = "Fibonacci: " + std::to_string(fib_b_);
         RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", msg_->data.c_str());
         // Put the message into a queue to be processed by the middleware.
         // This call is non-blocking.
         pub_->publish(std::move(msg_));
+        
+        // Aquí calculamos la salida
+        uint64_t next = fib_a_ + fib_b_;
+        fib_a_ = fib_b_;
+        fib_b_ = next;
       };
     // Create a publisher with a custom Quality of Service profile.
     // Uniform initialization is suggested so it can be trivially changed to
@@ -61,7 +73,11 @@ public:
   }
 
 private:
-  size_t count_ = 1;
+  
+  //size_t count_ = 1;
+  uint64_t fib_a_ = 0;
+  uint64_t fib_b_ = 1;
+  
   std::unique_ptr<std_msgs::msg::String> msg_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pub_;
   rclcpp::TimerBase::SharedPtr timer_;

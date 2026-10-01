@@ -75,7 +75,8 @@ add_library(topics_library SHARED
   src/topics/talker_serialized_message.cpp
   src/topics/listener.cpp
   src/topics/listener_serialized_message.cpp
-  src/topics/listener_best_effort.cpp)
+  src/topics/listener_best_effort.cpp
+  src/topics/number_processor.cpp)
 add_demo_dependencies(timers_library)
 add_demo_dependencies(services_library)
 add_demo_dependencies(parameters_library)
@@ -129,6 +130,9 @@ rclcpp_components_register_node(topics_library
 rclcpp_components_register_node(topics_library
   PLUGIN "demo_nodes_cpp::Listener"
   EXECUTABLE listener)
+rclcpp_components_register_node(topics_library
+  PLUGIN "demo_nodes_cpp::NumberProcessor" 
+  EXECUTABLE number_processor)
 rclcpp_components_register_node(topics_library
   PLUGIN "demo_nodes_cpp::SerializedMessageListener"
   EXECUTABLE listener_serialized_message)
